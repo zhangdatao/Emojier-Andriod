@@ -24,12 +24,6 @@ dependencies {
 }
 ```
 
-###Init The Config(Most Important)
-Pls don't forget do this,before you begin develope your app. You'd better do this in SplashActivity.
-```
-   EMLogicManager.getInstance().init();
-   DbOpenHelper.getInstance(Context context);
-```
 ####Config Your AppKey
 Before you use the sdk,you must call the method of **EMLogicManager**which is single instance to config the app key which you apply on our website.
 ```
@@ -40,6 +34,13 @@ EMLogicManager.getInstance().setAppKey(String appKey);
 ```
 ###Config The UserKey
 If you want use the emoji that custome ,you should  config the user key which have applyed on our website.This method also appear in the **EMLogicManager**.
+```
+
+###Init The Config
+Pls don't forget do this,before you begin develope your app. You'd better do this in SplashActivity.
+```
+   EMLogicManager.getInstance().init();
+   DbOpenHelper.getInstance(Context context);
 ```
 /**
 userKey:which used for get the custome emoji
