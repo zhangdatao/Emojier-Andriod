@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/input_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/mSendBt"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:text="send"/>
+
+        <EditText
+            android:id="@+id/mTestET"
+            android:layout_toLeftOf="@id/mSendBt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/mToolBarLL"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@id/input_menu"
+        android:paddingLeft="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="3dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/mRecentBT"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="recent"
+            />
+        <Button
+            android:id="@+id/mConvertBT"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="14dp"
+            android:gravity="center"
+            android:text="convert"
+            />
+
+        <Button
+            android:id="@+id/mBackslashBT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:clickable="false"
+            android:background="@drawable/backspash_icon"
+            android:layout_marginRight="15dp"
+            android:visibility="visible"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/mRecentLL"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_above="@id/mToolBarLL"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        />
+
+    <ListView
+        android:id="@+id/mList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/mRecentLL"/>
+
+
+</RelativeLayout>
