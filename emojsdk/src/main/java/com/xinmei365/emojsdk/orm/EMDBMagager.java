@@ -95,7 +95,7 @@ public class EMDBMagager {
                             finalStr = finalStr + secondEntry.mWord.toString();
                             needTransEntry.setWord(finalStr);
 
-                            //后面跟着空格
+                            //follow by whitespace
                             int maxCount = 8;
                             for (int j = 1; j < maxCount; j++) {
                                 if (i + 1 + j <= count - 1) {
@@ -136,7 +136,7 @@ public class EMDBMagager {
                                         String totalStr = finalStr.toString() + thirdEntry.mWord;
                                         String tempTotalStr = totalStr.toLowerCase();
                                         if (cacheWords.contains(tempTotalStr)) {
-                                            //直接匹配上
+                                            //matched
                                             needTransEntry.setWord(totalStr);
                                             needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
 
