@@ -34,7 +34,6 @@ EMLogicManager.getInstance().setAppKey(String appKey);
 ###Config The UserKey
 If you want use your own emoji, you need config the user key in your dashboard.
 ```
-
 ###Init The Config
 We recommend do this in your SplashActivity.
 ```
@@ -188,7 +187,7 @@ private void convertSentence() {
 When you want to get the emojis which you recent used, just call the follow method.
 ```
 EMRecentManger.getInstance().getEMRecents()
-
+```
 Example:
 ```
 private void getRecentEmojis() {
