@@ -24,8 +24,7 @@ import java.util.Vector;
  */
 public class EMDBMagager {
 
-
-    private static final String TAG = EMDBMagager.class.getSimpleName();
+ //   private static final String TAG = EMDBMagager.class.getSimpleName();
     private static EMDBMagager mInstance = null;
     private final DbOpenHelper dbHelper;
 
@@ -47,9 +46,9 @@ public class EMDBMagager {
     public Map<String, ArrayList<EMCharacterEntity>> filterTranslateWord(ArrayList<EMCharacterEntity> emTransEntries) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = null;
-        String queryArg = null;
-        String querySql = null;
+//        Cursor cursor = null;
+//        String queryArg = null;
+//        String querySql = null;
 
         ArrayList<EMCharacterEntity> needTransArr = new ArrayList<EMCharacterEntity>();
         ArrayList<EMCharacterEntity> needJoinArr = new ArrayList<EMCharacterEntity>();

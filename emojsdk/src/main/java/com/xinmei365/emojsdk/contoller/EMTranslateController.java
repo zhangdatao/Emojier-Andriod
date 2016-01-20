@@ -25,8 +25,8 @@ public class EMTranslateController implements INotifyCallback {
 
     private final String TAG = EMTranslateController.class.getSimpleName();
     private static EMTranslateController mInstance;
-    private static final char mEmojHolder = '☃';
-    private static final char mSpace = ' ';
+    private static final char mEmojHolder = 0xfffc;
+    private static final char mSpace = 0x20;
     private IEMTranslateCallback mEMTranslateCallback;
 
     private EMTranslateController() {
