@@ -131,7 +131,7 @@ public class HttpManager {
         Bitmap bitmap = BitmapFactory.decodeStream(inStream);
 
         String filName = MD5Util.getMD5String(httReq.url);
-        File file = new File(Environment.getExternalStorageDirectory()+ Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
+        File file = new File( Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
         File restFile = CompressUtil.compressAndSaveBitmap(bitmap, file);
         file.setLastModified(System.currentTimeMillis());
         String destPath = restFile.getPath();

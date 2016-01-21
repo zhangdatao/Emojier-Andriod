@@ -19,7 +19,7 @@ import java.util.List;
 public class CommUtil {
 
     public static void clearAllEmojImgs() {
-        File file = new File(Environment.getExternalStorageDirectory() + Constant.IMAGE_CACHE_DIR);
+        File file = new File(Constant.IMAGE_CACHE_DIR);
         if (file.exists()) {
             deleteDir(file);
         }
@@ -85,7 +85,7 @@ public class CommUtil {
     }
 
     public static void deleteRedundancyImgs() {
-        String fileDir = Environment.getExternalStorageDirectory() + Constant.IMAGE_CACHE_DIR;
+        String fileDir = Constant.IMAGE_CACHE_DIR;
         File file = new File(fileDir);
         double dirSize = getDirSize(file);
         Logger.d("dirsize", "dirsize= " + dirSize);

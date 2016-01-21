@@ -162,9 +162,9 @@ public class EMContolManager {
                                 try {
                                     //check if there responding cached emoji
                                     String filName = MD5Util.getMD5String(emojHttpReq.buildRequest().urlString());
-                                    File file = new File(Environment.getExternalStorageDirectory() + Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
-                                    file.setLastModified(System.currentTimeMillis());
+                                    File file = new File(Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
                                     if (file.exists()) {
+                                        file.setLastModified(System.currentTimeMillis());
                                         emImgProperty.mEmojPath = file.getPath();
 
                                         emImgProperty.mEmojBmap = BitmapFactory.decodeStream(new FileInputStream(file));

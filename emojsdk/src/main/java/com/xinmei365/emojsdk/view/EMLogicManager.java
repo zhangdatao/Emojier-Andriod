@@ -123,11 +123,13 @@ public class EMLogicManager implements OnEMResponseListener {
     private void processImgCacheDir() {
         //check image dir
         try {
-            File file = new File(Environment.getExternalStorageDirectory() + Constant.IMAGE_CACHE_DIR);
+            File file = new File(Constant.IMAGE_CACHE_DIR);
             if (!file.exists()) {
-                file.mkdirs();
+               file.mkdirs();
+
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

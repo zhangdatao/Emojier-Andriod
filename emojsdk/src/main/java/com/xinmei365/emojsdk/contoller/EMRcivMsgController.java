@@ -190,7 +190,7 @@ public class EMRcivMsgController {
                 boolean haveEmptyBitmap = false;
                 for (EMCandiateProperty.EMImgProperty emImgProperty : emojEntity.mEmImgProperties) {
                     String filName = MD5Util.getMD5String(emImgProperty.mEmojUrl);
-                    File file = new File(Environment.getExternalStorageDirectory() + Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
+                    File file = new File(Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
                     if (file.exists()) {
                         emImgProperty.mEmojPath = file.getPath();
                         emImgProperty.mEmojBmap = BitmapFactory.decodeFile(file.getPath());

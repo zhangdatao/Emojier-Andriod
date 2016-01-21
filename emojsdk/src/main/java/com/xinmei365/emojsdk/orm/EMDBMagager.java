@@ -75,7 +75,7 @@ public class EMDBMagager {
                         EMCharacterEntity secondEntry = emTransEntries.get(i + 1);
                         if (secondEntry.mCharType == EMCharacterEntity.CharacterType.Emoj) {
 
-                            //James☃, such form, need set james type to transfer and put into array
+                            //James0xfffc, such form, need set james type to transfer and put into array
                             needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
 
                             needTransArr.add(needTransEntry);

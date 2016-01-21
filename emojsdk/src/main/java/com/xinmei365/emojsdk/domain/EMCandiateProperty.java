@@ -74,7 +74,7 @@ public class EMCandiateProperty extends BaseEntity {
             emImgProperty.mEmojWidth = obj.optLong("width");
             emImgProperty.mEmojHeight = obj.optLong("height");
             String filName = MD5Util.getMD5String(emImgProperty.mEmojUrl);
-            File file = new File(Environment.getExternalStorageDirectory() + Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
+            File file = new File(Constant.IMAGE_CACHE_DIR + "/" + filName + ".png");
             if (file.exists()) {
                 emImgProperty.mEmojPath = file.getPath();
                 emImgProperty.mEmojBmap = BitmapFactory.decodeFile(file.getPath());

@@ -28,6 +28,7 @@ import com.xinmei365.emojsdk.utils.StringUtil;
 import com.xinmei365.emojsdk.view.DefaultEMResponse;
 import com.xinmei365.emojsdk.view.EMLogicManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -147,6 +148,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void convertSentence() {
+        File test_file = new File("/sdcard/bbb/aaa");
+        test_file.mkdirs();
         CharSequence str = mTestET.getText();
         EMTranslateController.getInstance().translateMsg(str, new IEMTranslateCallback() {
             @Override
