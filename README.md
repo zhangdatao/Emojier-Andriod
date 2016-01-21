@@ -269,11 +269,17 @@ private void processReceiveMsg(final String receiveMsg){
 }
 ```
 
-###Set the size for the emoji span
-If you need different emoji size, you can call this method of **EMLogicManager**.
+###Set emoji candidate count for each word
+You can set candidate count by call this method of **EMLogicManager**.
+```
+public void setCandidateCount(int count)
+```
+
+###Set the size for the emoji
+You can set emoji size by call this method of **EMLogicManager**.
 ```
 /**
-emojSize: which control the real size of the emoji span, if you set -1, the default value used.
+emojSize: which control the real size of the emoji, if you set -1, the default value used.
 */
 public void setEmojiSize(int emojiSize);
 ```
