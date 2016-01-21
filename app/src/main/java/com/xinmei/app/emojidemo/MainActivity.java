@@ -148,8 +148,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private void convertSentence() {
-        File test_file = new File("/sdcard/bbb/aaa");
-        test_file.mkdirs();
         CharSequence str = mTestET.getText();
         EMTranslateController.getInstance().translateMsg(str, new IEMTranslateCallback() {
             @Override

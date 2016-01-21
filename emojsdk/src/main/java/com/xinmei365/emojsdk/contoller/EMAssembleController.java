@@ -29,7 +29,7 @@ import java.util.Vector;
  */
 public class EMAssembleController {
 
-    private static final String HOLDER_CHAR = "☃";
+    private static final char HOLDER_CHAR = 0xfffc;
 
     private static EMAssembleController mInstance = null;
 

@@ -5,7 +5,7 @@ package com.xinmei365.emojsdk.domain;
  */
 public class EMHolderEntity {
 
-    public static final String FINAL_HOLDER = "☃";
+    public static final String FINAL_HOLDER = "\ufffc";
 
     public int mEmojStart;
 
