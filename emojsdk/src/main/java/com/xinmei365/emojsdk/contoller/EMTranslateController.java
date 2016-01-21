@@ -102,13 +102,13 @@ public class EMTranslateController implements INotifyCallback {
                 CharSequence tempStr = content.subSequence(0, befEntry.mWordStart);
                 for (int k = 0; k < tempStr.length(); k++) {
                     if (tempStr.charAt(k) == mEmojHolder) {
-                        EMCharacterEntity transEntry = new EMCharacterEntity(k, k + 1, tempStr, EMCharacterEntity.CharacterType.Emoj);
+                        EMCharacterEntity transEntry = new EMCharacterEntity(k, k + 1, tempStr.subSequence(k,k+1), EMCharacterEntity.CharacterType.Emoj);
                         allArrs.add(transEntry);
                     } else if (tempStr.charAt(k) == mSpace) {
-                        EMCharacterEntity transEntry = new EMCharacterEntity(k, k + 1, tempStr, EMCharacterEntity.CharacterType.Space);
+                        EMCharacterEntity transEntry = new EMCharacterEntity(k, k + 1, tempStr.subSequence(k,k+1), EMCharacterEntity.CharacterType.Space);
                         allArrs.add(transEntry);
                     } else {
-                        EMCharacterEntity transEntry = new EMCharacterEntity(k, k + 1, String.valueOf(tempStr.charAt(k)), EMCharacterEntity.CharacterType.Other);
+                        EMCharacterEntity transEntry = new EMCharacterEntity(k, k + 1, tempStr.subSequence(k,k+1), EMCharacterEntity.CharacterType.Other);
                         allArrs.add(transEntry);
                     }
                 }
