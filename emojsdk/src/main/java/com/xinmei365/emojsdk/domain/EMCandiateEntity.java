@@ -24,7 +24,7 @@ public class EMCandiateEntity {
 
     public ArrayList<EMCandiateProperty> mEmojEntities;
 
-    public boolean isClickCan = false; //flag if toolbar had been clicked, select emoji candidate to replace highlight word
+    //public boolean isClickCan = false; //flag if toolbar had been clicked, select emoji candidate to replace highlight word
     public Vector<SpannableStringBuilder> mEMSpans;
 
     public EMCandiateEntity(String userinputEmojStr, int emojStartIndex) {

@@ -10,10 +10,10 @@ import java.util.Vector;
 public class EMTranslatEntity {
 
     public SpannableStringBuilder mSpanSb;
-    public Vector<EMCandiateEntity> mAllStressEMKeys;
+    public Vector<EMCandiateEntity> mCands;
 
-    public EMTranslatEntity(SpannableStringBuilder mSpanSb, Vector<EMCandiateEntity> mAllStressEMKeys) {
-        this.mSpanSb = mSpanSb;
-        this.mAllStressEMKeys = mAllStressEMKeys;
+    public EMTranslatEntity(SpannableStringBuilder spanSb, Vector<EMCandiateEntity> cands) {
+        this.mSpanSb = spanSb;
+        this.mCands = cands;
     }
 }
