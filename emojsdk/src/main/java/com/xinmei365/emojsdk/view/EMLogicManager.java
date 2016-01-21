@@ -9,6 +9,7 @@ import com.xinmei365.emojsdk.domain.EMCandiateEntity;
 import com.xinmei365.emojsdk.domain.EMReceiveTxtEntity;
 import com.xinmei365.emojsdk.domain.UserInputEntity;
 import com.xinmei365.emojsdk.utils.CommUtil;
+import com.xinmei365.emojsdk.utils.DeviceUtil;
 import com.xinmei365.emojsdk.utils.SharedPrenceUtil;
 
 import java.io.File;
@@ -100,9 +101,12 @@ public class EMLogicManager implements OnEMResponseListener {
         SharedPrenceUtil.getInstance(CommUtil.getContext()).setInt(Constant.KEY_CUSTOM_EMOJI_SIZE, emojiSize);
     }
 
-
-    public void setReqImgSize(int imgSize){
-        SharedPrenceUtil.getInstance(CommUtil.getContext()).setInt(Constant.KEY_REQ_IMG_SIZE, imgSize);
+    //set the candidate count for each word, if not set or less than 0, 1 candidate as default
+    public void setCandidateCount(int count){
+        if (count<=0){
+            count = 1;
+        }
+        SharedPrenceUtil.getInstance(CommUtil.getContext()).setInt(Constant.KEY_EMOJI_CAND_COUNT,count);
     }
 
     /**
@@ -118,6 +122,14 @@ public class EMLogicManager implements OnEMResponseListener {
         getAllEmKeys();
         processImgCacheDir();
         EMRecentManger.getInstance().init();
+        int emojiSize = SharedPrenceUtil.getInstance(CommUtil.getContext()).getInt(Constant.KEY_CUSTOM_EMOJI_SIZE);
+        if (emojiSize <=0){
+            SharedPrenceUtil.getInstance(CommUtil.getContext()).setInt(Constant.KEY_CUSTOM_EMOJI_SIZE, DeviceUtil.getSpanEmojSize());
+        }
+        int candCount = SharedPrenceUtil.getInstance(CommUtil.getContext()).getInt(Constant.KEY_EMOJI_CAND_COUNT);
+        if (candCount<=0) {
+            SharedPrenceUtil.getInstance(CommUtil.getContext()).setInt(Constant.KEY_EMOJI_CAND_COUNT, 1);
+        }
     }
 
     private void processImgCacheDir() {

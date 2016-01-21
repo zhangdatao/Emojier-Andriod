@@ -40,6 +40,7 @@ public class Constant{
 	public static final String KEY_USER_KEY = "key_user_key";
 	public static final String KEY_APP_KEY = "key_app_key";
 	public static final String KEY_CUSTOM_EMOJI_SIZE = "key_custom_emoji_size";
-	public static final String KEY_REQ_IMG_SIZE = "key_req_img_size";
+//	public static final String KEY_REQ_IMG_SIZE = "key_req_img_size";
 	public static final String KEY_MAX_EMOJI_BUFFER_SIZE = "key_max_emoji_buffer_size";
+	public static final String KEY_EMOJI_CAND_COUNT = "key_emoji_cand_count";
 }

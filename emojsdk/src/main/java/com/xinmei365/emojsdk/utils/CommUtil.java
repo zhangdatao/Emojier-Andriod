@@ -55,7 +55,7 @@ public class CommUtil {
     public static String getReqImgSize() {
         String defautlSize = "064";
 
-        int imgSize = SharedPrenceUtil.getInstance(CommUtil.getContext()).getInt(Constant.KEY_REQ_IMG_SIZE);
+        int imgSize = SharedPrenceUtil.getInstance(CommUtil.getContext()).getInt(Constant.KEY_CUSTOM_EMOJI_SIZE);
         if (0 < imgSize && imgSize < 100) {
             defautlSize = "0" + imgSize;
         } else if (imgSize >= 100) {
