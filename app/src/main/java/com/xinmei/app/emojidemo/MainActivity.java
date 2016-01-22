@@ -52,6 +52,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         EMLogicManager.getInstance().setAppKey("testappkey1");
         EMLogicManager.getInstance().init();
+        EMLogicManager.getInstance().setCandidateCount(2);
         DbOpenHelper.getInstance(this);
 
         initViews();
@@ -220,12 +221,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void processReceiveMsg(final String receiveMsg){
         EMRcivMsgController.getInstance().setOnReceiveMsgTranslateListener(new EMRcivMsgController.IReceiveMsgTranslateListener() {
             @Override
-            public void onTranslateReceiveMsgSuccess() {
-                //all the emoji has downloaded,reloaded the content
-                EMReceiveTxtEntity emojTxtEntity = EMRcivMsgController.getInstance().processReceiveContent(MainActivity.this, receiveMsg);
-                receiveMsagAdapter.addData(emojTxtEntity.mFinalSpanSB);
+            public void onTranslateReceiveMsgSuccess(EMReceiveTxtEntity receTxtEntity) {
+                receiveMsagAdapter.addData(receTxtEntity.mFinalSpanSB);
             }
         });
+       EMRcivMsgController.getInstance().processReceiveContent(MainActivity.this, receiveMsg);
     }
 
     private void getEmoj(String emKey, int keyStart) {

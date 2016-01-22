@@ -59,7 +59,7 @@ public class EMRcivMsgController {
     }
 
 
-    public EMReceiveTxtEntity processReceiveContent(Context ctx, String msgStr) {
+    public void processReceiveContent(Context ctx, String msgStr) {
 
         Logger.d(TAG, "receive content=" + msgStr);
 
@@ -67,7 +67,7 @@ public class EMRcivMsgController {
 
         Map<Integer, CharEntity> map = new TreeMap<>();
 
-        String regex = "#\\[[\\w]{4}_[a-zA-Z_0-9]{1,}\\]|(#\\|)[\\w:_ ]{1,}\\|";
+        String regex =  "(#\\|)[\\w:_ ]{1,}\\|";//"#\\[[\\w]{4}_[a-zA-Z_0-9]{1,}\\]|(#\\|)[\\w:_ ]{1,}\\|";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(msgStr);
         ArrayList<TempEntity> arrs = new ArrayList<>();
@@ -77,11 +77,12 @@ public class EMRcivMsgController {
 
             arrs.add(new TempEntity(matcher.start(), matcher.end()));
             int currStart = matcher.start();
-            if (emojTag.startsWith("#[")) {
-                CharEntity charEntity = new CharEntity(emojTag, currStart, CharEntity.CharType.LocalEMOJ);
-                charEntity.mEmojUnicode = emojTag.substring(2, emojTag.length() - 1);
-                map.put(currStart, charEntity);
-            } else if (emojTag.startsWith("#|")) {
+//            if (emojTag.startsWith("#[")) {
+//                CharEntity charEntity = new CharEntity(emojTag, currStart, CharEntity.CharType.LocalEMOJ);
+//                charEntity.mEmojUnicode = emojTag.substring(2, emojTag.length() - 1);
+//                map.put(currStart, charEntity);
+//            } else if (emojTag.startsWith("#|")) {
+            if (emojTag.startsWith("#|")) {
                 CharEntity charEntity = new CharEntity(emojTag, currStart, CharEntity.CharType.OnlineEmoj);
                 charEntity.setEmojKeyID(emojTag.substring(2, emojTag.length() - 1));
                 map.put(currStart, charEntity);
@@ -90,7 +91,8 @@ public class EMRcivMsgController {
 
         if (arrs.size() == 0) {
             receTxtEnty.mFinalSpanSB.append(msgStr);
-            return receTxtEnty;
+            msgTranslateListener.onTranslateReceiveMsgSuccess(receTxtEnty);
+            return;
         }
 
         //handle char conjunction case, split normal content
@@ -118,7 +120,7 @@ public class EMRcivMsgController {
 
         assembleBuilder(ctx, receTxtEnty);
         processEmojIds(receTxtEnty);
-        return receTxtEnty;
+        return;
 
     }
 
@@ -131,9 +133,9 @@ public class EMRcivMsgController {
 //                    receTxtEnty.mFinalSpanSB.setSpan(charEnty.mOriginalStr, charEnty.start, charEnty.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     receTxtEnty.mFinalSpanSB.append(charEnty.mOriginalStr);
                     break;
-                case LocalEMOJ:
-                    processLocalEmoj(ctx, receTxtEnty, charEnty);
-                    break;
+//                case LocalEMOJ:
+//                    processLocalEmoj(ctx, receTxtEnty, charEnty);
+//                    break;
                 case OnlineEmoj:
                     processOnlineEmoj(ctx, receTxtEnty, charEnty);
                     break;
@@ -141,29 +143,28 @@ public class EMRcivMsgController {
         }
     }
 
-    /**
-     * process local emoj
-     *
-     * @param receTxtEnty
-     */
-    private void processLocalEmoj(Context ctx, EMReceiveTxtEntity receTxtEnty, CharEntity charEntity) {
-
-        if (!StringUtil.isNullOrEmpty(charEntity.mEmojUnicode)) {
-            String emojRes = charEntity.mEmojUnicode;
-            float density = ctx.getResources().getDisplayMetrics().density;
-            int emojSize = (int) density * 20;
-            int id = ctx.getResources().getIdentifier(emojRes, "drawable", ctx.getPackageName());
-            if (id != 0) {
-                Drawable drawable = ctx.getResources().getDrawable(id);
-                drawable.setBounds(0, 0, emojSize, emojSize);
-                ImageSpan imageSpan = new ImageSpan(drawable);
-                receTxtEnty.mFinalSpanSB.append(EMHolderEntity.FINAL_HOLDER);
-                int length = receTxtEnty.mFinalSpanSB.toString().length();
-                receTxtEnty.mFinalSpanSB.setSpan(imageSpan, length - 1, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                receTxtEnty.mSpanStrBuild.setSpan(imageSpan, charEntity.start, charEntity.end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            }
-        }
-    }
+//    /**
+//     * process local emoj
+//     *
+//     * @param receTxtEnty
+//     */
+//    private void processLocalEmoj(Context ctx, EMReceiveTxtEntity receTxtEnty, CharEntity charEntity) {
+//
+//        if (!StringUtil.isNullOrEmpty(charEntity.mEmojUnicode)) {
+//            String emojRes = charEntity.mEmojUnicode;
+//            float density = ctx.getResources().getDisplayMetrics().density;
+//            int emojSize = (int) density * 20;
+//            int id = ctx.getResources().getIdentifier(emojRes, "drawable", ctx.getPackageName());
+//            if (id != 0) {
+//                Drawable drawable = ctx.getResources().getDrawable(id);
+//                drawable.setBounds(0, 0, emojSize, emojSize);
+//                ImageSpan imageSpan = new ImageSpan(drawable);
+//                receTxtEnty.mFinalSpanSB.append(EMHolderEntity.FINAL_HOLDER);
+//                int length = receTxtEnty.mFinalSpanSB.toString().length();
+//                receTxtEnty.mFinalSpanSB.setSpan(imageSpan, length - 1, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            }
+//        }
+//    }
 
 
     private void processOnlineEmoj(Context ctx, EMReceiveTxtEntity receTxtEnty, CharEntity charEnty) {
@@ -172,7 +173,6 @@ public class EMRcivMsgController {
             receTxtEnty.mEmojIds.add(charEnty);
             //there ate no emoji property cache content, show the related key directly
             receTxtEnty.mFinalSpanSB.append(charEnty.mEmojKey);
-//            receTxtEnty.mSpanStrBuild.replace(charEnty.start, charEnty.end, charEnty.mEmojKey);
         } else {
             processOnlinEmojProperty(receTxtEnty, charEnty, emojProperty);
 
@@ -211,12 +211,10 @@ public class EMRcivMsgController {
                     receTxtEnty.mFinalSpanSB.append(EMHolderEntity.FINAL_HOLDER);
                     int length = receTxtEnty.mFinalSpanSB.toString().length();
                     receTxtEnty.mFinalSpanSB.setSpan(emojSpan, length - 1, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-//                    receTxtEnty.mSpanStrBuild.setSpan(emojSpan, emojEntity.mSpanStarIndex, emojEntity.mSpanEndIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 } else {
                     //emoji property json exist in local but there are no related image, show content directly
                     receTxtEnty.mFinalSpanSB.append(charEntity.mEmojKey);
-//                    receTxtEnty.mSpanStrBuild.replace(charEntity.start, charEntity.end, charEntity.mEmojKey);
+
                 }
             }
         } catch (Exception e) {
@@ -227,8 +225,11 @@ public class EMRcivMsgController {
     private static void processEmojIds(EMReceiveTxtEntity receTxtEntity) {
         //request property according to id
         if (receTxtEntity == null) return;
-        if (receTxtEntity.mEmojIds.size() == 0 && receTxtEntity.mNoBitMapEmojTagEntities.size() == 0)
+        if (receTxtEntity.mEmojIds.size() == 0 && receTxtEntity.mNoBitMapEmojTagEntities.size() == 0){
+            msgTranslateListener.onTranslateReceiveMsgSuccess(receTxtEntity);
             return;
+        }
+
 
         if (receTxtEntity.mEmojIds.size() > 0) {
             notifyCallBack();
@@ -243,12 +244,12 @@ public class EMRcivMsgController {
     private static void notifyCallBack() {
         EMLogicManager.getInstance().setEMRespSpanListener(new DefaultEMResponse() {
             @Override
-            public void onEMRespProperty(EMReceiveTxtEntity EMReceiveTxtEntity) {
+            public void onEMRespProperty(EMReceiveTxtEntity txtEntity) {
                 //notify all emoji in ui, image had been downloaded into local, re-execute processReceiveContent to update ui
-                NotifyEntity notifyEntity = new NotifyEntity(NotifyKeys.UPDATE_CHAT_CHOW_TEXT, EMReceiveTxtEntity);
-                NotifyManager.getInstance().sendNotifyCallback(NotifyKeys.UPDATE_CHAT_CHOW_TEXT, notifyEntity);
+//                NotifyEntity notifyEntity = new NotifyEntity(NotifyKeys.UPDATE_CHAT_CHOW_TEXT, EMReceiveTxtEntity);
+//                NotifyManager.getInstance().sendNotifyCallback(NotifyKeys.UPDATE_CHAT_CHOW_TEXT, notifyEntity);
                 if (msgTranslateListener != null){
-                    msgTranslateListener.onTranslateReceiveMsgSuccess();
+                    msgTranslateListener.onTranslateReceiveMsgSuccess(txtEntity);
                 }
             }
         });
@@ -260,6 +261,6 @@ public class EMRcivMsgController {
     }
 
     public interface IReceiveMsgTranslateListener{
-        void onTranslateReceiveMsgSuccess();
+        void onTranslateReceiveMsgSuccess(EMReceiveTxtEntity txtEntity);
     }
 }

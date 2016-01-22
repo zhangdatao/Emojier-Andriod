@@ -67,7 +67,7 @@ public class EMAssembleController {
                     break;
                 case Emoj:
                     SpannableStringBuilder tempSpan = (SpannableStringBuilder) entry.mWord;
-                    ReplacementSpan[] spans = tempSpan.getSpans(i, i + 1, ReplacementSpan.class);
+                    ReplacementSpan[] spans = tempSpan.getSpans(0, entry.mWord.length(), ReplacementSpan.class);
                     if (spans.length > 0) {
                         ReplacementSpan emojSpan = null;
                         if (spans[0] instanceof EMImageSpan) {

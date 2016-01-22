@@ -81,6 +81,8 @@ public class EMContolManager {
         if (!StringUtil.isNullOrEmpty(userKey)) {
             emojReqParam.put("p_key", userKey);
         }
+        int count = SharedPrenceUtil.getInstance(CommUtil.getContext()).getInt(Constant.KEY_EMOJI_CAND_COUNT);
+        emojReqParam.put("count", String.valueOf(count));
         HttpGetRequest emojHttpReq = new HttpGetRequest(HttpUrlConfig.CANDIATE_EMOJ_URL, TAG, emojReqParam, null);
         HttpManager.getInstance().execute(emojHttpReq, new ResponseCallback<String>() {
 
