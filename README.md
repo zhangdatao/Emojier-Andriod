@@ -37,8 +37,7 @@ If you want use your own emoji, you need config the user key in your dashboard.
 ###Init The Config
 We recommend do this in your SplashActivity.
 ```
-   EMLogicManager.getInstance().init();
-   DbOpenHelper.getInstance(Context context);
+   EMLogicManager.getInstance().init(Context appContext);
 ```
 /**
 userKey: which used for get your own emoji
