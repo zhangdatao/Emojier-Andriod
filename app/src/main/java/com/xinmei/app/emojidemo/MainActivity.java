@@ -28,9 +28,9 @@ import com.xinmei365.emojsdk.utils.StringUtil;
 import com.xinmei365.emojsdk.view.DefaultEMResponse;
 import com.xinmei365.emojsdk.view.EMLogicManager;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Vector;
+
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -45,6 +45,33 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private LinearLayout mToolBarLL;
     private ReceiveMsagAdapter receiveMsagAdapter;
     private ArrayList<CharSequence> mData = new ArrayList<>();
+    private EMRcivMsgController.IReceiveMsgTranslateListener mReceiveMsgListener = new EMRcivMsgController.IReceiveMsgTranslateListener() {
+        @Override
+        public void onTranslateReceiveMsgSuccess(EMReceiveTxtEntity receTxtEntity) {
+            receiveMsagAdapter.addData(receTxtEntity.mFinalSpanSB);
+        }
+    };
+    private IEMTranslateCallback mTranslateCallback = new IEMTranslateCallback() {
+        @Override
+        public void onEmojTransferSuccess(EMTranslatEntity translatEntity) {
+
+            if (translatEntity != null) {
+                mTestET.setMovementMethod(LinkMovementMethod.getInstance());
+                mTestET.setText(translatEntity.mSpanSb, TextView.BufferType.SPANNABLE);
+                mTestET.setSelection(translatEntity.mSpanSb.length());
+            }
+        }
+
+        @Override
+        public void onEmojTransferError() {
+            Log.d("emoji_error","translate error");
+        }
+
+        @Override
+        public void onEmptyMsgTranslate() {
+            Log.d("emoji_error","translate empty message");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +79,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main);
         EMLogicManager.getInstance().setAppKey("testappkey1");
         EMLogicManager.getInstance().init();
-        EMLogicManager.getInstance().setCandidateCount(2);
         DbOpenHelper.getInstance(this);
 
         initViews();
@@ -150,27 +176,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void convertSentence() {
         CharSequence str = mTestET.getText();
-        EMTranslateController.getInstance().translateMsg(str, new IEMTranslateCallback() {
-            @Override
-            public void onEmojTransferSuccess(EMTranslatEntity translatEntity) {
-
-                if (translatEntity != null) {
-                    mTestET.setMovementMethod(LinkMovementMethod.getInstance());
-                    mTestET.setText(translatEntity.mSpanSb, TextView.BufferType.SPANNABLE);
-                    mTestET.setSelection(translatEntity.mSpanSb.length());
-                }
-            }
-
-            @Override
-            public void onEmojTransferError() {
-                Log.d("emoji_error","translate error");
-            }
-
-            @Override
-            public void onEmptyMsgTranslate() {
-                Log.d("emoji_error","translate empty message");
-            }
-        });
+        EMTranslateController.getInstance().translateMsg(str, mTranslateCallback );
     }
 
     private void getRecentEmojis() {
@@ -219,13 +225,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 
     private void processReceiveMsg(final String receiveMsg){
-        EMRcivMsgController.getInstance().setOnReceiveMsgTranslateListener(new EMRcivMsgController.IReceiveMsgTranslateListener() {
-            @Override
-            public void onTranslateReceiveMsgSuccess(EMReceiveTxtEntity receTxtEntity) {
-                receiveMsagAdapter.addData(receTxtEntity.mFinalSpanSB);
-            }
-        });
-       EMRcivMsgController.getInstance().processReceiveContent(MainActivity.this, receiveMsg);
+        EMRcivMsgController.getInstance().setOnReceiveMsgTranslateListener(mReceiveMsgListener);
+        EMRcivMsgController.getInstance().processReceiveContent(receiveMsg);
     }
 
     private void getEmoj(String emKey, int keyStart) {

@@ -79,7 +79,7 @@ public class EMAssembleController {
                         spanSb.setSpan(emojSpan, spanSb.length() - 1, spanSb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                     break;
-                case Transfer:
+                case Translate:
                     String emojProperty = EMDBMagager.getInstance().queryEmojByTag(entry.mWord.toString());
                     if (StringUtil.isNullOrEmpty(emojProperty)) {
                         spanSb.append(entry.mWord);

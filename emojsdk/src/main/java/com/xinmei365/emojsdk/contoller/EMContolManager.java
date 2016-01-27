@@ -45,7 +45,6 @@ public class EMContolManager {
 
     private final String TAG = EMContolManager.class.getSimpleName();
     private static EMContolManager mInstance;
-
     private EMContolManager() {
 
     }

@@ -61,16 +61,16 @@ public class EMTranslateController implements INotifyCallback {
         ArrayList<EMCharacterEntity> emTransEntries = splitAllContent(content);
         Map<String, ArrayList<EMCharacterEntity>> jonAndTranMap = EMDBMagager.getInstance().filterTranslateWord(emTransEntries);
 
-        ArrayList<EMCharacterEntity> transferArr = jonAndTranMap.get(Constant.KEY_EMOJ_TRANSFER_ASSEMBLE_ARR);
+        ArrayList<EMCharacterEntity> translateArr = jonAndTranMap.get(Constant.KEY_EMOJ_TRANSLATE_ASSEMBLE_ARR);
         ArrayList<EMCharacterEntity> joinArr = jonAndTranMap.get(Constant.KEY_EMOJ_ALL_ASSEMBLE_ARR);
 
-        if (transferArr.size() == 0) {
+        if (translateArr.size() == 0) {
             if (mEMTranslateCallback != null) {
                 mEMTranslateCallback.onEmptyMsgTranslate();
             }
         } else {
             MessageQueueManager.getInstance().putNeedAssebleKeys(joinArr);
-            MessageQueueManager.getInstance().putAllNeedTransEmojKey(transferArr);
+            MessageQueueManager.getInstance().putAllNeedTransEmojKey(translateArr);
         }
 
     }

@@ -47,9 +47,9 @@ public class EMLogicManager implements OnEMResponseListener {
 
 
     public void requestForEmojById(EMReceiveTxtEntity receTxtEntity) {
-        if (mEMRespSpanListener == null) {
+//        if (mEMRespSpanListener == null) {
 //            mEMRespSpanListener = new DefEmojSpan(userInputStr);
-        }
+//        }
         mEmojControlMgr.requestForEmojById(receTxtEntity, this);
     }
 

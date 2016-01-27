@@ -24,7 +24,7 @@ public class EMCharacterEntity {
     }
 
     public enum CharacterType {
-        Normal,Space, Other, Emoj,Transfer
+        Normal,Space, Other, Emoj,Translate
     }
 
     public EMCharacterEntity(int wordStart, String word) {

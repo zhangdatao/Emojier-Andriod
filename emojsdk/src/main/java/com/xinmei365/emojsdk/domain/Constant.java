@@ -35,7 +35,7 @@ public class Constant{
 	public static final String KEY_EMOJ_START_INDEX = "key_emoj_start_index";
 
 	public static final String KEY_EMOJ_ALL_ASSEMBLE_ARR = "key_emoj_all_assemble_arr";
-	public static final String KEY_EMOJ_TRANSFER_ASSEMBLE_ARR = "key_emoj_transfer_assemble_arr";
+	public static final String KEY_EMOJ_TRANSLATE_ASSEMBLE_ARR = "key_emoj_translate_assemble_arr";
 
 	public static final String KEY_USER_KEY = "key_user_key";
 	public static final String KEY_APP_KEY = "key_app_key";

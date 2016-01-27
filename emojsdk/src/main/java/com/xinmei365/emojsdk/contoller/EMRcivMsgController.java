@@ -59,7 +59,7 @@ public class EMRcivMsgController {
     }
 
 
-    public void processReceiveContent(Context ctx, String msgStr) {
+    public void processReceiveContent(String msgStr) {
 
         Logger.d(TAG, "receive content=" + msgStr);
 
@@ -118,13 +118,13 @@ public class EMRcivMsgController {
         receTxtEnty.allContent = map;
 
 
-        assembleBuilder(ctx, receTxtEnty);
+        assembleBuilder(receTxtEnty);
         processEmojIds(receTxtEnty);
         return;
 
     }
 
-    private void assembleBuilder(Context ctx, EMReceiveTxtEntity receTxtEnty) {
+    private void assembleBuilder(EMReceiveTxtEntity receTxtEnty) {
         Set<Map.Entry<Integer, CharEntity>> entrySet = receTxtEnty.allContent.entrySet();
         for (Map.Entry<Integer, CharEntity> entry : entrySet) {
             CharEntity charEnty = entry.getValue();
@@ -137,7 +137,7 @@ public class EMRcivMsgController {
 //                    processLocalEmoj(ctx, receTxtEnty, charEnty);
 //                    break;
                 case OnlineEmoj:
-                    processOnlineEmoj(ctx, receTxtEnty, charEnty);
+                    processOnlineEmoj(receTxtEnty, charEnty);
                     break;
             }
         }
@@ -167,7 +167,7 @@ public class EMRcivMsgController {
 //    }
 
 
-    private void processOnlineEmoj(Context ctx, EMReceiveTxtEntity receTxtEnty, CharEntity charEnty) {
+    private void processOnlineEmoj(EMReceiveTxtEntity receTxtEnty, CharEntity charEnty) {
         String emojProperty = EMDBMagager.getInstance().getEmojPropertyById(charEnty.mEmojID);
         if (StringUtil.isNullOrEmpty(emojProperty)) {
             receTxtEnty.mEmojIds.add(charEnty);
@@ -245,9 +245,6 @@ public class EMRcivMsgController {
         EMLogicManager.getInstance().setEMRespSpanListener(new DefaultEMResponse() {
             @Override
             public void onEMRespProperty(EMReceiveTxtEntity txtEntity) {
-                //notify all emoji in ui, image had been downloaded into local, re-execute processReceiveContent to update ui
-//                NotifyEntity notifyEntity = new NotifyEntity(NotifyKeys.UPDATE_CHAT_CHOW_TEXT, EMReceiveTxtEntity);
-//                NotifyManager.getInstance().sendNotifyCallback(NotifyKeys.UPDATE_CHAT_CHOW_TEXT, notifyEntity);
                 if (msgTranslateListener != null){
                     msgTranslateListener.onTranslateReceiveMsgSuccess(txtEntity);
                 }

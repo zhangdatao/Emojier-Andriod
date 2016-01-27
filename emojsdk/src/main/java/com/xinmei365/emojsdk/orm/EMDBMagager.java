@@ -46,9 +46,6 @@ public class EMDBMagager {
     public Map<String, ArrayList<EMCharacterEntity>> filterTranslateWord(ArrayList<EMCharacterEntity> emTransEntries) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-//        Cursor cursor = null;
-//        String queryArg = null;
-//        String querySql = null;
 
         ArrayList<EMCharacterEntity> needTransArr = new ArrayList<EMCharacterEntity>();
         ArrayList<EMCharacterEntity> needJoinArr = new ArrayList<EMCharacterEntity>();
@@ -68,7 +65,7 @@ public class EMDBMagager {
 
                 if (cacheWords.size() > 0) {
                     if (i == count - 1) { // the last one, add it directly and return
-                        needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                        needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
                         needTransArr.add(needTransEntry);
                         needJoinArr.add(needTransEntry);
                     } else if (i < count - 1) { // not the last
@@ -76,14 +73,14 @@ public class EMDBMagager {
                         if (secondEntry.mCharType == EMCharacterEntity.CharacterType.Emoj) {
 
                             //James0xfffc, such form, need set james type to transfer and put into array
-                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
 
                             needTransArr.add(needTransEntry);
                             needJoinArr.add(needTransEntry);
                             needJoinArr.add(secondEntry);
                             i++;
                         }else if (secondEntry.mCharType == EMCharacterEntity.CharacterType.Other){
-                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
 
                             needTransArr.add(needTransEntry);
                             needJoinArr.add(needTransEntry);
@@ -105,7 +102,7 @@ public class EMDBMagager {
                                             finalStr = finalStr.subSequence(0,finalStr.length() - 1);
 
                                             needTransEntry.setWord(finalStr);
-                                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
 
                                             needTransArr.add(needTransEntry);
 
@@ -117,7 +114,7 @@ public class EMDBMagager {
                                             j = maxCount;
                                         }else {
                                             needTransEntry.setWord(finalStr);
-                                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
 
                                             needTransArr.add(needTransEntry);
 
@@ -137,7 +134,7 @@ public class EMDBMagager {
                                         if (cacheWords.contains(tempTotalStr)) {
                                             //matched
                                             needTransEntry.setWord(totalStr);
-                                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                                            needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
 
                                             needTransArr.add(needTransEntry);
                                             needJoinArr.add(needTransEntry);
@@ -159,7 +156,7 @@ public class EMDBMagager {
                                                     finalStr = finalStr.subSequence(0,finalStr.length() - 1);
 
                                                     needTransEntry.setWord(finalStr);
-                                                    needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                                                    needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
 
                                                     needTransArr.add(needTransEntry);
 
@@ -182,7 +179,7 @@ public class EMDBMagager {
                             if (StringUtil.isNullOrEmpty(finalStr.toString()) && !needTransArr.contains(needTransEntry)) {
                                 needTransEntry.setWord(finalStr);
 
-                                needTransEntry.mCharType = EMCharacterEntity.CharacterType.Transfer;
+                                needTransEntry.mCharType = EMCharacterEntity.CharacterType.Translate;
                                 needTransArr.add(needTransEntry);
                                 needJoinArr.add(needTransEntry);
                             }
@@ -206,7 +203,7 @@ public class EMDBMagager {
 
 
         Map<String, ArrayList<EMCharacterEntity>> map = new HashMap<>();
-        map.put(Constant.KEY_EMOJ_TRANSFER_ASSEMBLE_ARR, needTransArr);
+        map.put(Constant.KEY_EMOJ_TRANSLATE_ASSEMBLE_ARR, needTransArr);
         map.put(Constant.KEY_EMOJ_ALL_ASSEMBLE_ARR, needJoinArr);
 
         return map;
@@ -304,7 +301,7 @@ public class EMDBMagager {
 
 
     /**
-     * 保存表情到本地
+     * save emoji to local
      */
     public void cacheEmojToLocalDB(EmojEntity emojEntity) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();

@@ -44,19 +44,19 @@ public class NotifyManager {
      * @param type   additional fields
      * @return notification type
      */
-    public String createFlag(String cmd, String subcmd, String type, String otherMarks) {
-        StringBuilder flag = new StringBuilder(cmd + "_" + subcmd);
-
-        if (!StringUtil.isNullOrEmpty(type)) {
-            flag.append("_").append(type);
-        }
-
-        if (!StringUtil.isNullOrEmpty(otherMarks)) {
-            flag.append("_").append(otherMarks);
-        }
-
-        return flag.toString();
-    }
+//    private String createFlag(String cmd, String subcmd, String type, String otherMarks) {
+//        StringBuilder flag = new StringBuilder(cmd + "_" + subcmd);
+//
+//        if (!StringUtil.isNullOrEmpty(type)) {
+//            flag.append("_").append(type);
+//        }
+//
+//        if (!StringUtil.isNullOrEmpty(otherMarks)) {
+//            flag.append("_").append(otherMarks);
+//        }
+//
+//        return flag.toString();
+//    }
 
 
     /**
@@ -92,11 +92,11 @@ public class NotifyManager {
      * @param otherMarks additional mark
      * @param callback
      */
-    public void registerNotifyCallback(String cmd, String subcmd, String type, String otherMarks, INotifyCallback callback) {
-        String notifyFlag = createFlag(cmd, subcmd, type, otherMarks);
-
-        registerNotifyCallback(notifyFlag, callback);
-    }
+//    public void registerNotifyCallback(String cmd, String subcmd, String type, String otherMarks, INotifyCallback callback) {
+//        String notifyFlag = createFlag(cmd, subcmd, type, otherMarks);
+//
+//        registerNotifyCallback(notifyFlag, callback);
+//    }
 
     /**
      * register notification message listener
@@ -106,9 +106,9 @@ public class NotifyManager {
      * @param type     type some protocol need
      * @param callback
      */
-    public void registerNotifyCallback(String cmd, String subcmd, String type, INotifyCallback callback) {
-        registerNotifyCallback(cmd, subcmd, type, "", callback);
-    }
+//    public void registerNotifyCallback(String cmd, String subcmd, String type, INotifyCallback callback) {
+//        registerNotifyCallback(cmd, subcmd, type, "", callback);
+//    }
 
     /**
      * register notification listener
@@ -117,9 +117,9 @@ public class NotifyManager {
      * @param subcmd   subcmd
      * @param callback
      */
-    public void registerNotifyCallback(String cmd, String subcmd, INotifyCallback callback) {
-        registerNotifyCallback(cmd, subcmd, "", callback);
-    }
+//    public void registerNotifyCallback(String cmd, String subcmd, INotifyCallback callback) {
+//        registerNotifyCallback(cmd, subcmd, "", callback);
+//    }
 
     /**
      * delete all listener
@@ -157,11 +157,11 @@ public class NotifyManager {
      * @param callback
      * @param otherMarks other mark
      */
-    public void removeNotifyCallback(String cmd, String subcmd, String type, String otherMarks, INotifyCallback callback) {
-        String notifyFlag = createFlag(cmd, subcmd, type, otherMarks);
-
-        removeNotifyCallback(notifyFlag, callback);
-    }
+//    public void removeNotifyCallback(String cmd, String subcmd, String type, String otherMarks, INotifyCallback callback) {
+//        String notifyFlag = createFlag(cmd, subcmd, type, otherMarks);
+//
+//        removeNotifyCallback(notifyFlag, callback);
+//    }
 
     /**
      * delete listener
@@ -171,9 +171,9 @@ public class NotifyManager {
      * @param type     additional mark
      * @param callback
      */
-    public void removeNotifyCallback(String cmd, String subcmd, String type, INotifyCallback callback) {
-        removeNotifyCallback(cmd, subcmd, type, "", callback);
-    }
+//    public void removeNotifyCallback(String cmd, String subcmd, String type, INotifyCallback callback) {
+//        removeNotifyCallback(cmd, subcmd, type, "", callback);
+//    }
 
     /**
      * register listener
@@ -182,9 +182,9 @@ public class NotifyManager {
      * @param subcmd   subcmd
      * @param callback type some protocol need
      */
-    public void removeNotifyCallback(String cmd, String subcmd, INotifyCallback callback) {
-        removeNotifyCallback(cmd, subcmd, "", callback);
-    }
+//    public void removeNotifyCallback(String cmd, String subcmd, INotifyCallback callback) {
+//        removeNotifyCallback(cmd, subcmd, "", callback);
+//    }
 
     /**
      * remove all listener
@@ -213,9 +213,9 @@ public class NotifyManager {
 
             int size = callbacks.size();
             for (int i = 0; i < size; i++) {
-                if (i >= callbacks.size()) {
-                    break;
-                }
+//                if (i >= callbacks.size()) {
+//                    break;
+//                }
 
                 INotifyCallback notify = callbacks.get(i);
                 if (notify != null) {
@@ -235,15 +235,15 @@ public class NotifyManager {
      *
      * @param entity content entity
      */
-    public void sendNotifyCallback(NotifyEntity entity) {
-        if (entity == null) {
-            return;
-        }
-
-        String notifyFlag = createFlag(entity.getCmd(), entity.getSubcmd(), entity.getType(), entity.getOtherMarks());
-
-        sendNotifyCallback(notifyFlag, entity);
-    }
+//    public void sendNotifyCallback(NotifyEntity entity) {
+//        if (entity == null) {
+//            return;
+//        }
+//
+//        String notifyFlag = createFlag(entity.getCmd(), entity.getSubcmd(), entity.getType(), entity.getOtherMarks());
+//
+//        sendNotifyCallback(notifyFlag, entity);
+//    }
 
 
 
