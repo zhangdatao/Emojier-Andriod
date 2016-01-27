@@ -24,10 +24,14 @@ public class EMLogicManager implements OnEMResponseListener {
     private static EMLogicManager mInstance;
     private OnEMResponseListener mEMRespSpanListener;
     private EMContolManager mEmojControlMgr;
-
+    private Context mAppContext;
 
     private EMLogicManager() {
         mEmojControlMgr = EMContolManager.getInstance();
+    }
+
+    public Context getAppContext(){
+        return mAppContext;
     }
 
     public static EMLogicManager getInstance() {
@@ -121,7 +125,7 @@ public class EMLogicManager implements OnEMResponseListener {
 
 
     public void init(Context appContext){
-        DbOpenHelper.init(appContext);
+        mAppContext = appContext;
         getAllEmKeys();
         processImgCacheDir();
         EMRecentManger.getInstance().init();

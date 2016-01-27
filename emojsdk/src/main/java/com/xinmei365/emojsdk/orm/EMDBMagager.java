@@ -9,6 +9,7 @@ import com.xinmei365.emojsdk.domain.Constant;
 import com.xinmei365.emojsdk.domain.EMCharacterEntity;
 import com.xinmei365.emojsdk.domain.EmojEntity;
 import com.xinmei365.emojsdk.utils.StringUtil;
+import com.xinmei365.emojsdk.view.EMLogicManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,14 +26,14 @@ public class EMDBMagager {
 
  //   private static final String TAG = EMDBMagager.class.getSimpleName();
     private static EMDBMagager mInstance = null;
-    private final DbOpenHelper dbHelper;
+//    private final DbOpenHelper dbHelper;
 
 
     private static final int RECENT_EMOJ_COUNT = 10;
 
 
     private EMDBMagager() {
-        dbHelper = DbOpenHelper.getInstance();
+//        dbHelper = DbOpenHelper.getInstance();
     }
 
     public synchronized static EMDBMagager getInstance() {
@@ -43,7 +44,7 @@ public class EMDBMagager {
     }
 
     public Map<String, ArrayList<EMCharacterEntity>> filterTranslateWord(ArrayList<EMCharacterEntity> emTransEntries) {
-
+        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         ArrayList<EMCharacterEntity> needTransArr = new ArrayList<EMCharacterEntity>();
@@ -192,7 +193,7 @@ public class EMDBMagager {
                 needJoinArr.add(entry);
             }
         }
-
+        db.close();
         for (EMCharacterEntity entry : needTransArr) {
             Log.d("transfer", entry.toString());
         }
@@ -218,6 +219,7 @@ public class EMDBMagager {
         while (cursor.moveToNext()) {
             cacheWords.add(cursor.getString(cursor.getColumnIndex("emoj_tag")).toLowerCase());
         }
+        cursor.close();
         return cacheWords;
     }
 
@@ -239,6 +241,7 @@ public class EMDBMagager {
         if (emojTag.contains("\\")) {
             emojTag = emojTag.substring(1, emojTag.length());
         }
+        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(CandiateEmojDao.COLUMN_NAME_EMOJTAG, emojTag);
@@ -248,7 +251,7 @@ public class EMDBMagager {
         if (db.isOpen()) {
             db.replace(CandiateEmojDao.TABLE_NAME, null, values);
         }
-        closeDB(dbHelper);
+        dbHelper.close();
     }
 
     public String queryEmojByTag(String emojTag) {
@@ -258,13 +261,15 @@ public class EMDBMagager {
         }
 
         String emojTagContent = null;
+        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String querySql = "SELECT * FROM candiate_emoj WHERE emoj_tag=?";
         Cursor cursor = db.rawQuery(querySql, new String[]{emojTag});
         while (cursor.moveToNext()) {
             emojTagContent = cursor.getString(cursor.getColumnIndex("emoj_content"));
         }
-        closeDB(dbHelper);
+        cursor.close();
+        dbHelper.close();
         return emojTagContent;
     }
 
@@ -272,7 +277,7 @@ public class EMDBMagager {
         if (StringUtil.isNullOrEmpty(emojId)) {
             return;
         }
-
+        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(EmojIDPropertyDao.COLUMN_NAME_EMOJTID, emojId);
@@ -281,20 +286,22 @@ public class EMDBMagager {
         if (db.isOpen()) {
             db.replace(EmojIDPropertyDao.TABLE_NAME, null, values);
         }
-        closeDB(dbHelper);
+        dbHelper.close();
     }
 
     public String getEmojPropertyById(String emojId) {
         if (StringUtil.isNullOrEmpty(emojId)) return null;
 
         String emojProperty = null;
+        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String querySql = "SELECT * FROM emoj_id_property WHERE emoj_id=?";
         Cursor cursor = db.rawQuery(querySql, new String[]{emojId});
         while (cursor.moveToNext()) {
             emojProperty = cursor.getString(cursor.getColumnIndex("emoj_property"));
         }
-        closeDB(dbHelper);
+        cursor.close();
+        dbHelper.close();
         return emojProperty;
     }
 
@@ -303,6 +310,7 @@ public class EMDBMagager {
      * save emoji to local
      */
     public void cacheEmojToLocalDB(EmojEntity emojEntity) {
+        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         String querySql = "SELECT * FROM recentEmoj";
@@ -326,6 +334,7 @@ public class EMDBMagager {
                     db.execSQL(delSql);
                 }
             }
+            queryCursor.close();
         } else {
             String sql = "SELECT * FROM recentEmoj WHERE emojUnicode=?";
             Cursor queryCursor = db.rawQuery(sql, new String[]{emojEntity.mEmojUnicode});
@@ -333,8 +342,9 @@ public class EMDBMagager {
                 String delSql = "DELETE FROM recentEmoj WHERE emojUnicode=\'" + emojEntity.mEmojUnicode + "\'";
                 db.execSQL(delSql);
             }
+            queryCursor.close();
         }
-
+        cursor.close();
 
         ContentValues values = new ContentValues();
         values.put(RecentEmojDao.COLUMN_NAME_TIMESTAMP, emojEntity.mRecentUseTimestamp);
@@ -349,7 +359,7 @@ public class EMDBMagager {
         }
 
         if (db.isOpen()){
-            db.close();
+            dbHelper.close();
         }
 
     }
@@ -357,6 +367,7 @@ public class EMDBMagager {
 
     public Vector<EmojEntity> queryRecentEomjs() {
         Vector<EmojEntity> recentEmojs = new Vector<>();
+        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String querySql = "SELECT * FROM recentEmoj";
         Cursor cursor = db.rawQuery(querySql, null);
@@ -372,10 +383,9 @@ public class EMDBMagager {
             EmojEntity emojEntity = new EmojEntity(emojID, emojType);
             recentEmojs.add(emojEntity);
         }
+        cursor.close();
+        dbHelper.close();
         return recentEmojs;
     }
 
-    private void closeDB(DbOpenHelper db) {
-        db.closeDB();
-    }
 }

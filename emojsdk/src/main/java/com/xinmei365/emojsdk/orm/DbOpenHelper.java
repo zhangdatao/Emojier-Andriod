@@ -21,7 +21,7 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 
 	private static final int DATABASE_VERSION = 5;
 	private static final String DTATBASE_NAME = "emoj_sdk.db";
-	private static DbOpenHelper instance;
+	//private static DbOpenHelper instance;
 
 	private static final String CREATE_EMOJID_PROPERTY = "CREATE TABLE "
 			+ EmojIDPropertyDao.TABLE_NAME + " ("
@@ -43,17 +43,17 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 			+ RecentEmojDao.COLUMN_NAME_EMOJ_TYPE + " TEXT, "
 			+ RecentEmojDao.COLUMN_NAME_CategoryName + " TEXT);";
 
-	private DbOpenHelper(Context context) {
+	public DbOpenHelper(Context context) {
 		super(context, DTATBASE_NAME, null, DATABASE_VERSION);
 	}
-	public static void init(Context context){
-		if (instance == null) {
-			instance = new DbOpenHelper(context.getApplicationContext());
-		}
-	}
-	public static DbOpenHelper getInstance() {
-		return instance;
-	}
+//	public static void init(Context context){
+//		if (instance == null) {
+//			instance = new DbOpenHelper(context.getApplicationContext());
+//		}
+//	}
+//	public static DbOpenHelper getInstance() {
+//		return instance;
+//	}
 	
 
 	@Override
@@ -69,16 +69,16 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 
 	}
 	
-	public void closeDB() {
-	    if (instance != null) {
-	        try {
-	            SQLiteDatabase db = instance.getWritableDatabase();
-	            db.close();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	        instance = null;
-	    }
-	}
+//	public void closeDB() {
+//	    if (instance != null) {
+//	        try {
+//	            SQLiteDatabase db = instance.getWritableDatabase();
+//	            db.close();
+//	        } catch (Exception e) {
+//	            e.printStackTrace();
+//	        }
+//	        instance = null;
+//	    }
+//	}
 	
 }

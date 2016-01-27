@@ -22,7 +22,6 @@ import com.xinmei365.emojsdk.contoller.IEMTranslateCallback;
 import com.xinmei365.emojsdk.domain.EMCandiateEntity;
 import com.xinmei365.emojsdk.domain.EMReceiveTxtEntity;
 import com.xinmei365.emojsdk.domain.EMTranslatEntity;
-import com.xinmei365.emojsdk.orm.DbOpenHelper;
 import com.xinmei365.emojsdk.utils.SpanableUtil;
 import com.xinmei365.emojsdk.utils.StringUtil;
 import com.xinmei365.emojsdk.view.DefaultEMResponse;
