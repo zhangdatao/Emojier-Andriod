@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.xinmei365.emojsdk.LibApp;
 import com.xinmei365.emojsdk.domain.Constant;
 import com.xinmei365.emojsdk.domain.EMCharacterEntity;
 import com.xinmei365.emojsdk.domain.EmojEntity;
@@ -33,7 +32,7 @@ public class EMDBMagager {
 
 
     private EMDBMagager() {
-        dbHelper = DbOpenHelper.getInstance(LibApp.getContext());
+        dbHelper = DbOpenHelper.getInstance();
     }
 
     public synchronized static EMDBMagager getInstance() {

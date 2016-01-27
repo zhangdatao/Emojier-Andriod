@@ -1,5 +1,6 @@
 package com.xinmei365.emojsdk.view;
 
+import android.content.Context;
 import android.os.Environment;
 
 import com.xinmei365.emojsdk.contoller.EMContolManager;
@@ -8,6 +9,7 @@ import com.xinmei365.emojsdk.domain.Constant;
 import com.xinmei365.emojsdk.domain.EMCandiateEntity;
 import com.xinmei365.emojsdk.domain.EMReceiveTxtEntity;
 import com.xinmei365.emojsdk.domain.UserInputEntity;
+import com.xinmei365.emojsdk.orm.DbOpenHelper;
 import com.xinmei365.emojsdk.utils.CommUtil;
 import com.xinmei365.emojsdk.utils.DeviceUtil;
 import com.xinmei365.emojsdk.utils.SharedPrenceUtil;
@@ -118,7 +120,8 @@ public class EMLogicManager implements OnEMResponseListener {
     }
 
 
-    public void init(){
+    public void init(Context appContext){
+        DbOpenHelper.init(appContext);
         getAllEmKeys();
         processImgCacheDir();
         EMRecentManger.getInstance().init();

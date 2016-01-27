@@ -78,8 +78,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         EMLogicManager.getInstance().setAppKey("testappkey1");
-        EMLogicManager.getInstance().init();
-        DbOpenHelper.getInstance(this);
+        EMLogicManager.getInstance().init(this.getApplicationContext());
 
         initViews();
         initData();

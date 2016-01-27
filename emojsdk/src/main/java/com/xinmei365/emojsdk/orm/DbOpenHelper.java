@@ -46,11 +46,12 @@ public class DbOpenHelper extends SQLiteOpenHelper{
 	private DbOpenHelper(Context context) {
 		super(context, DTATBASE_NAME, null, DATABASE_VERSION);
 	}
-	
-	public static DbOpenHelper getInstance(Context context) {
+	public static void init(Context context){
 		if (instance == null) {
 			instance = new DbOpenHelper(context.getApplicationContext());
 		}
+	}
+	public static DbOpenHelper getInstance() {
 		return instance;
 	}
 	
