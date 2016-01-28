@@ -1,11 +1,7 @@
 package com.xinmei365.emojsdk.contoller;
 
-import android.content.Context;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.os.Environment;
 import android.text.Spanned;
-import android.text.style.ImageSpan;
 
 import com.xinmei365.emojsdk.domain.CharEntity;
 import com.xinmei365.emojsdk.domain.Constant;
@@ -13,9 +9,6 @@ import com.xinmei365.emojsdk.domain.EMCandiateProperty;
 import com.xinmei365.emojsdk.domain.EMHolderEntity;
 import com.xinmei365.emojsdk.domain.EMReceiveTxtEntity;
 import com.xinmei365.emojsdk.domain.TempEntity;
-import com.xinmei365.emojsdk.notify.NotifyEntity;
-import com.xinmei365.emojsdk.notify.NotifyKeys;
-import com.xinmei365.emojsdk.notify.NotifyManager;
 import com.xinmei365.emojsdk.orm.EMDBMagager;
 import com.xinmei365.emojsdk.utils.Logger;
 import com.xinmei365.emojsdk.utils.MD5Util;
@@ -116,12 +109,8 @@ public class EMRcivMsgController {
         }
 
         receTxtEnty.allContent = map;
-
-
         assembleBuilder(receTxtEnty);
         processEmojIds(receTxtEnty);
-        return;
-
     }
 
     private void assembleBuilder(EMReceiveTxtEntity receTxtEnty) {

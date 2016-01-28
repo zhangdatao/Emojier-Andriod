@@ -84,6 +84,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
         setListener();
     }
 
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        EMLogicManager.getInstance().unInit();
+    }
+
+
+
     private void initViews() {
         mTestET = (EditText)findViewById(R.id.mTestET);
         mSendBt = (Button)findViewById(R.id.mSendBt);

@@ -20,7 +20,7 @@ public class CharEntity {
 
 
     public enum CharType{
-        Normal,LocalEMOJ,OnlineEmoj;
+        Normal,LocalEMOJ,OnlineEmoj
     }
 
     public CharEntity(int start, int end) {

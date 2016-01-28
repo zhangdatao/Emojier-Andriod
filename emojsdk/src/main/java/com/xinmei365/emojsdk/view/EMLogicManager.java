@@ -1,7 +1,6 @@
 package com.xinmei365.emojsdk.view;
 
 import android.content.Context;
-import android.os.Environment;
 
 import com.xinmei365.emojsdk.contoller.EMContolManager;
 import com.xinmei365.emojsdk.contoller.EMRecentManger;
@@ -9,7 +8,7 @@ import com.xinmei365.emojsdk.domain.Constant;
 import com.xinmei365.emojsdk.domain.EMCandiateEntity;
 import com.xinmei365.emojsdk.domain.EMReceiveTxtEntity;
 import com.xinmei365.emojsdk.domain.UserInputEntity;
-import com.xinmei365.emojsdk.orm.DbOpenHelper;
+import com.xinmei365.emojsdk.orm.EMDBMagager;
 import com.xinmei365.emojsdk.utils.CommUtil;
 import com.xinmei365.emojsdk.utils.DeviceUtil;
 import com.xinmei365.emojsdk.utils.SharedPrenceUtil;
@@ -24,14 +23,9 @@ public class EMLogicManager implements OnEMResponseListener {
     private static EMLogicManager mInstance;
     private OnEMResponseListener mEMRespSpanListener;
     private EMContolManager mEmojControlMgr;
-    private Context mAppContext;
 
     private EMLogicManager() {
         mEmojControlMgr = EMContolManager.getInstance();
-    }
-
-    public Context getAppContext(){
-        return mAppContext;
     }
 
     public static EMLogicManager getInstance() {
@@ -53,9 +47,6 @@ public class EMLogicManager implements OnEMResponseListener {
 
 
     public void requestForEmojById(EMReceiveTxtEntity receTxtEntity) {
-//        if (mEMRespSpanListener == null) {
-//            mEMRespSpanListener = new DefEmojSpan(userInputStr);
-//        }
         mEmojControlMgr.requestForEmojById(receTxtEntity, this);
     }
 
@@ -125,7 +116,7 @@ public class EMLogicManager implements OnEMResponseListener {
 
 
     public void init(Context appContext){
-        mAppContext = appContext;
+        EMDBMagager.Init(appContext);
         getAllEmKeys();
         processImgCacheDir();
         EMRecentManger.getInstance().init();
@@ -137,6 +128,9 @@ public class EMLogicManager implements OnEMResponseListener {
         if (candCount<=0) {
             SharedPrenceUtil.getInstance(CommUtil.getContext()).setInt(Constant.KEY_EMOJI_CAND_COUNT, 1);
         }
+    }
+    public void unInit(){
+        EMDBMagager.unInit();
     }
 
     private void processImgCacheDir() {

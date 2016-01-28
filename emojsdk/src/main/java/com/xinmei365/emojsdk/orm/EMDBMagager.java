@@ -1,6 +1,7 @@
 package com.xinmei365.emojsdk.orm;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -27,25 +28,42 @@ public class EMDBMagager {
  //   private static final String TAG = EMDBMagager.class.getSimpleName();
     private static EMDBMagager mInstance = null;
 //    private final DbOpenHelper dbHelper;
+    private SQLiteDatabase mSqliteDb = null;
 
 
     private static final int RECENT_EMOJ_COUNT = 10;
 
 
-    private EMDBMagager() {
-//        dbHelper = DbOpenHelper.getInstance();
+    private EMDBMagager(Context appContext) {
+        DbOpenHelper dbHelper = new DbOpenHelper(appContext);
+        mSqliteDb = dbHelper.getWritableDatabase();
     }
-
-    public synchronized static EMDBMagager getInstance() {
+    private void closeDb(){
+        if (mSqliteDb == null){
+            return;
+        }
+        if (mSqliteDb.isOpen()){
+            mSqliteDb.close();
+        }
+    }
+    public static void unInit(){
+        if (mInstance == null) return;
+        mInstance.closeDb();
+        mInstance = null;
+    }
+    public  static void Init(Context appContext){
         if (mInstance == null) {
-            mInstance = new EMDBMagager();
+            mInstance = new EMDBMagager(appContext);
+        }
+    }
+    public static EMDBMagager getInstance(){
+        if (mInstance == null){
+            throw new IllegalStateException("EDBManager not initialized");
         }
         return mInstance;
     }
 
     public Map<String, ArrayList<EMCharacterEntity>> filterTranslateWord(ArrayList<EMCharacterEntity> emTransEntries) {
-        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         ArrayList<EMCharacterEntity> needTransArr = new ArrayList<EMCharacterEntity>();
         ArrayList<EMCharacterEntity> needJoinArr = new ArrayList<EMCharacterEntity>();
@@ -60,7 +78,7 @@ public class EMDBMagager {
 
             if (entry.mCharType == EMCharacterEntity.CharacterType.Normal) {
                 String word = entry.mWord.toString();
-                ArrayList<String> cacheWords = getCacheWords(db, word);
+                ArrayList<String> cacheWords = getCacheWords(mSqliteDb, word);
 
 
                 if (cacheWords.size() > 0) {
@@ -193,7 +211,6 @@ public class EMDBMagager {
                 needJoinArr.add(entry);
             }
         }
-        db.close();
         for (EMCharacterEntity entry : needTransArr) {
             Log.d("transfer", entry.toString());
         }
@@ -241,17 +258,14 @@ public class EMDBMagager {
         if (emojTag.contains("\\")) {
             emojTag = emojTag.substring(1, emojTag.length());
         }
-        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(CandiateEmojDao.COLUMN_NAME_EMOJTAG, emojTag);
         if (!StringUtil.isNullOrEmpty(emojJson))
             values.put(CandiateEmojDao.COLUMN_NAME_EMOJ_CONTENT, emojJson);
 
-        if (db.isOpen()) {
-            db.replace(CandiateEmojDao.TABLE_NAME, null, values);
+        if (mSqliteDb.isOpen()) {
+            mSqliteDb.replace(CandiateEmojDao.TABLE_NAME, null, values);
         }
-        dbHelper.close();
     }
 
     public String queryEmojByTag(String emojTag) {
@@ -261,15 +275,12 @@ public class EMDBMagager {
         }
 
         String emojTagContent = null;
-        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String querySql = "SELECT * FROM candiate_emoj WHERE emoj_tag=?";
-        Cursor cursor = db.rawQuery(querySql, new String[]{emojTag});
+        Cursor cursor = mSqliteDb.rawQuery(querySql, new String[]{emojTag});
         while (cursor.moveToNext()) {
             emojTagContent = cursor.getString(cursor.getColumnIndex("emoj_content"));
         }
         cursor.close();
-        dbHelper.close();
         return emojTagContent;
     }
 
@@ -277,31 +288,25 @@ public class EMDBMagager {
         if (StringUtil.isNullOrEmpty(emojId)) {
             return;
         }
-        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(EmojIDPropertyDao.COLUMN_NAME_EMOJTID, emojId);
         values.put(EmojIDPropertyDao.COLUMN_NAME_EMOJ_PROPERTY, emojProperty);
 
-        if (db.isOpen()) {
-            db.replace(EmojIDPropertyDao.TABLE_NAME, null, values);
+        if (mSqliteDb.isOpen()) {
+            mSqliteDb.replace(EmojIDPropertyDao.TABLE_NAME, null, values);
         }
-        dbHelper.close();
     }
 
     public String getEmojPropertyById(String emojId) {
         if (StringUtil.isNullOrEmpty(emojId)) return null;
 
         String emojProperty = null;
-        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String querySql = "SELECT * FROM emoj_id_property WHERE emoj_id=?";
-        Cursor cursor = db.rawQuery(querySql, new String[]{emojId});
+        Cursor cursor = mSqliteDb.rawQuery(querySql, new String[]{emojId});
         while (cursor.moveToNext()) {
             emojProperty = cursor.getString(cursor.getColumnIndex("emoj_property"));
         }
         cursor.close();
-        dbHelper.close();
         return emojProperty;
     }
 
@@ -310,37 +315,34 @@ public class EMDBMagager {
      * save emoji to local
      */
     public void cacheEmojToLocalDB(EmojEntity emojEntity) {
-        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         String querySql = "SELECT * FROM recentEmoj";
-        Cursor cursor = db.rawQuery(querySql, null);
+        Cursor cursor = mSqliteDb.rawQuery(querySql, null);
         if (cursor != null && cursor.getCount() > RECENT_EMOJ_COUNT) {
             int needDel = cursor.getCount() - RECENT_EMOJ_COUNT;
             String deleteSql = "DELETE FROM recentEmoj WHERE timestamp IN " +
                     "(SELECT timestamp FROM recentEmoj LIMIT " + needDel + ") ";
-            db.execSQL(deleteSql);
+            mSqliteDb.execSQL(deleteSql);
         }
         if (emojEntity.mEmojType == 1) {
             String keyId = emojEntity.mEmojUnicode.substring(2, emojEntity.mEmojUnicode.length() - 1);
             String[] emojKeyAndID = keyId.split("_");
             String emojId = emojKeyAndID[1];
             String sql = "SELECT * FROM recentEmoj WHERE emojUnicode like ?";
-            Cursor queryCursor = db.rawQuery(sql, new String[]{"%" + emojId + "%"});
+            Cursor queryCursor = mSqliteDb.rawQuery(sql, new String[]{"%" + emojId + "%"});
             if (queryCursor.moveToNext()) {
                 String emojUnicode = queryCursor.getString(cursor.getColumnIndex(RecentEmojDao.COLUMN_NAME_unicode));
                 if (!StringUtil.isNullOrEmpty(emojUnicode) && emojUnicode.contains(emojId)) {
                     String delSql = "DELETE FROM recentEmoj WHERE emojUnicode=\'" + emojUnicode + "\'";
-                    db.execSQL(delSql);
+                    mSqliteDb.execSQL(delSql);
                 }
             }
             queryCursor.close();
         } else {
             String sql = "SELECT * FROM recentEmoj WHERE emojUnicode=?";
-            Cursor queryCursor = db.rawQuery(sql, new String[]{emojEntity.mEmojUnicode});
+            Cursor queryCursor = mSqliteDb.rawQuery(sql, new String[]{emojEntity.mEmojUnicode});
             if (queryCursor != null && queryCursor.getCount() >= 1) {
                 String delSql = "DELETE FROM recentEmoj WHERE emojUnicode=\'" + emojEntity.mEmojUnicode + "\'";
-                db.execSQL(delSql);
+                mSqliteDb.execSQL(delSql);
             }
             queryCursor.close();
         }
@@ -354,23 +356,16 @@ public class EMDBMagager {
         values.put(RecentEmojDao.COLUMN_NAME_CategoryName, emojEntity.mEmojCategoryName);
         values.put(RecentEmojDao.COLUMN_NAME_EMOJ_TYPE, emojEntity.mEmojType);
 
-        if (db.isOpen()){
-            db.insert(RecentEmojDao.TABLE_NAME, null, values);
+        if (mSqliteDb.isOpen()){
+            mSqliteDb.insert(RecentEmojDao.TABLE_NAME, null, values);
         }
-
-        if (db.isOpen()){
-            dbHelper.close();
-        }
-
     }
 
 
     public Vector<EmojEntity> queryRecentEomjs() {
         Vector<EmojEntity> recentEmojs = new Vector<>();
-        DbOpenHelper dbHelper = new DbOpenHelper(EMLogicManager.getInstance().getAppContext());
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         String querySql = "SELECT * FROM recentEmoj";
-        Cursor cursor = db.rawQuery(querySql, null);
+        Cursor cursor = mSqliteDb.rawQuery(querySql, null);
         boolean lastCursor = cursor.moveToLast();
         if (!lastCursor) return null;
         String emojID = cursor.getString(cursor.getColumnIndex(RecentEmojDao.COLUMN_NAME_unicode));
@@ -384,7 +379,6 @@ public class EMDBMagager {
             recentEmojs.add(emojEntity);
         }
         cursor.close();
-        dbHelper.close();
         return recentEmojs;
     }
 

@@ -2,7 +2,6 @@ package com.xinmei365.emojsdk.domain;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 
 import com.xinmei365.emojsdk.utils.MD5Util;
 

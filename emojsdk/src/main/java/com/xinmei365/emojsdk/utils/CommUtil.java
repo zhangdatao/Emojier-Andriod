@@ -2,7 +2,6 @@ package com.xinmei365.emojsdk.utils;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Environment;
 
 import com.xinmei365.emojsdk.domain.Constant;
 

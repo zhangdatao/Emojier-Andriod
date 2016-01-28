@@ -75,9 +75,9 @@ public class CountingRequestBody extends RequestBody {
 
     }
 
-    public static interface Listener {
+    public interface Listener {
 
-        public void onRequestProgress(long bytesWritten, long contentLength);
+        void onRequestProgress(long bytesWritten, long contentLength);
 
     }
 

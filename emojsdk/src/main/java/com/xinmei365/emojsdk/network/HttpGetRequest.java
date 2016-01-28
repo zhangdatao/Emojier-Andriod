@@ -38,7 +38,8 @@ public class HttpGetRequest<T> extends HttpReuqest {
 
     private String appendParams(String url, Map<String, T> params) {
         StringBuilder sb = new StringBuilder();
-        sb.append(url + "?");
+        sb.append(url);
+        sb.append("?");
         if (params != null && !params.isEmpty()) {
             for (String key : params.keySet()) {
                 sb.append(key).append("=").append((T)params.get(key)).append("&");

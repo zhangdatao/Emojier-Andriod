@@ -11,8 +11,8 @@ public class HttpImgRequest extends HttpGetRequest {
 
 
 
-    private ImageView imageview;
-    private int errorResId;
+    private ImageView mImageview;
+    private int mErrorResId;
 
     public HttpImgRequest(String url, String tag, Map<String, String> params,
                           Map<String, String> headers) {
@@ -22,8 +22,8 @@ public class HttpImgRequest extends HttpGetRequest {
     public HttpImgRequest(String url, String tag, Map<String, String> params,
                           Map<String, String> headers,ImageView imageView, int errorResId) {
         super(url, tag, params, headers);
-        this.imageview = imageView;
-        this.errorResId = errorResId;
+        mImageview = imageView;
+        mErrorResId = errorResId;
         isImageReq = true;
     }
 

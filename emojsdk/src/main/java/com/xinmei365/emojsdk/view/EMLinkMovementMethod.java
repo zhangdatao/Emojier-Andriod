@@ -44,38 +44,22 @@ public class EMLinkMovementMethod extends ScrollingMovementMethod {
 
     @Override
     protected boolean up(TextView widget, Spannable buffer) {
-        if (action(UP, widget, buffer)) {
-            return true;
-        }
-
-        return super.up(widget, buffer);
+        return action(UP, widget, buffer)||super.up(widget, buffer);
     }
 
     @Override
     protected boolean down(TextView widget, Spannable buffer) {
-        if (action(DOWN, widget, buffer)) {
-            return true;
-        }
-
-        return super.down(widget, buffer);
+        return action(DOWN, widget, buffer)||super.down(widget, buffer);
     }
 
     @Override
     protected boolean left(TextView widget, Spannable buffer) {
-        if (action(UP, widget, buffer)) {
-            return true;
-        }
-
-        return super.left(widget, buffer);
+        return action(UP, widget, buffer)||super.left(widget, buffer);
     }
 
     @Override
     protected boolean right(TextView widget, Spannable buffer) {
-        if (action(DOWN, widget, buffer)) {
-            return true;
-        }
-
-        return super.right(widget, buffer);
+        return action(DOWN, widget, buffer)||super.right(widget, buffer);
     }
 
     private boolean action(int what, TextView widget, Spannable buffer) {
