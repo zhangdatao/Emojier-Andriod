@@ -2,12 +2,16 @@ package com.xinmei365.emojsdk.utils;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ReplacementSpan;
 
 import com.xinmei365.emojsdk.domain.EMHolderEntity;
 import com.xinmei365.emojsdk.view.DefEmojSpan;
 import com.xinmei365.emojsdk.view.EMImageSpan;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by xinmei on 15/11/19.
@@ -54,5 +58,19 @@ public class SpanableUtil {
             }
         }
         return sBuilder;
+    }
+    public static String recoverTranslatedTxt(String content) {
+        StringBuffer sb = new StringBuffer(content);
+        String regex =  "(#\\|)[\\w:_ ]{1,}\\|";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(content);
+        int offset = 0;
+        while (matcher.find()) {
+            String emojTag = matcher.group();
+            String tmpStrAr[] = emojTag.substring(2, emojTag.length() - 1).split("_");
+            sb = sb.replace(matcher.start()-offset,matcher.end()-offset,tmpStrAr[0]);
+            offset+=emojTag.length()-tmpStrAr[0].length();
+        }
+        return sb.toString();
     }
 }

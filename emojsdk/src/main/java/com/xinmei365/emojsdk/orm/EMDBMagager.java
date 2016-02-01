@@ -10,7 +10,6 @@ import com.xinmei365.emojsdk.domain.Constant;
 import com.xinmei365.emojsdk.domain.EMCharacterEntity;
 import com.xinmei365.emojsdk.domain.EmojEntity;
 import com.xinmei365.emojsdk.utils.StringUtil;
-import com.xinmei365.emojsdk.view.EMLogicManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;

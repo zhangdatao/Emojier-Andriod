@@ -57,7 +57,7 @@ public class EMTranslateController implements INotifyCallback {
      */
     public void translateMsg(CharSequence content,IEMTranslateCallback translateCallback) {
         setEMTranslateCallback(translateCallback);
-
+        MessageQueueManager.getInstance().clear();
         ArrayList<EMCharacterEntity> emTransEntries = splitAllContent(content);
         Map<String, ArrayList<EMCharacterEntity>> jonAndTranMap = EMDBMagager.getInstance().filterTranslateWord(emTransEntries);
 

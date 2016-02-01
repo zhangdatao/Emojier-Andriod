@@ -178,4 +178,7 @@ public abstract class AbsEmojSpan extends ReplacementSpan {
     public void setEmojSize(int emojSzie) {
         this.mEmojSize = emojSzie;
     }
+    public void setSpanEmojSize(int emojSpanSzie){
+        this.mSpanEmojSize = emojSpanSzie;
+    }
 }
