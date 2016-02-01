@@ -47,8 +47,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private EMRcivMsgController.IReceiveMsgTranslateListener mReceiveMsgListener = new EMRcivMsgController.IReceiveMsgTranslateListener() {
         @Override
         public void onTranslateReceiveMsgSuccess(EMReceiveTxtEntity receTxtEntity) {
-           // receiveMsagAdapter.addData(receTxtEntity.mFinalSpanSB);
-            mSendBt.setText(receTxtEntity.mFinalSpanSB);
+            receiveMsagAdapter.addData(receTxtEntity.mFinalSpanSB);
         }
     };
     private IEMTranslateCallback mTranslateCallback = new IEMTranslateCallback() {
@@ -88,7 +87,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        EMLogicManager.getInstance().unInit();
     }
 
 

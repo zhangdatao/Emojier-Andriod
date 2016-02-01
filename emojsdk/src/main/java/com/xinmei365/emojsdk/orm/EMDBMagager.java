@@ -45,11 +45,6 @@ public class EMDBMagager {
             mSqliteDb.close();
         }
     }
-    public static void unInit(){
-        if (mInstance == null) return;
-        mInstance.closeDb();
-        mInstance = null;
-    }
     public  static void Init(Context appContext){
         if (mInstance == null) {
             mInstance = new EMDBMagager(appContext);

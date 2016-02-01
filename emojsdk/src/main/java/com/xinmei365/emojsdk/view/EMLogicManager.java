@@ -129,9 +129,6 @@ public class EMLogicManager implements OnEMResponseListener {
             SharedPrenceUtil.getInstance(CommUtil.getContext()).setInt(Constant.KEY_EMOJI_CAND_COUNT, 1);
         }
     }
-    public void unInit(){
-        EMDBMagager.unInit();
-    }
 
     private void processImgCacheDir() {
         //check image dir
